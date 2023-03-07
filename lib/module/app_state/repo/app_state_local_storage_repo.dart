@@ -2,6 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/enum/app_state_enum.dart';
 import '../../../data/term/local_storage_pref_key.dart';
 
+//read AppThemeState From LocalStorage
 Future<AppThemeStateEnum> readAppThemeStateFromLocalStorage() async {
   final prefs = await SharedPreferences.getInstance();
   final String? appThemeMode = prefs.getString(SharedPrefsKey.appThemeMode);
@@ -13,6 +14,7 @@ Future<AppThemeStateEnum> readAppThemeStateFromLocalStorage() async {
   }
 }
 
+//save AppThemeState To LocalStorage
 Future<void> saveAppThemeStateToLocalStorage(
     AppThemeStateEnum appThemeStateEnum) async {
   final prefs = await SharedPreferences.getInstance();
@@ -20,6 +22,7 @@ Future<void> saveAppThemeStateToLocalStorage(
       SharedPrefsKey.appThemeMode, appThemeStateEnum.toString());
 }
 
+//read AppAuthState
 Future<AppAuthStateEnum> readAppAuthState() async {
   final prefs = await SharedPreferences.getInstance();
   final String? appLoginState =
@@ -32,6 +35,7 @@ Future<AppAuthStateEnum> readAppAuthState() async {
   }
 }
 
+// save AppAuthState
 Future<void> saveAppAuthState(AppAuthStateEnum appAuthStateEnum) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString(

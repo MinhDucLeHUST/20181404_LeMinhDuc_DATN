@@ -232,6 +232,7 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
+  //feature signup with email
   Future<UserCredential?> signupWithEmail() async {
     try {
       final credential =
@@ -252,6 +253,7 @@ class _SignupPageState extends State<SignupPage> {
     return null;
   }
 
+  //feature check email valid
   bool checkEmailValid(String email) {
     if (email.contains('@') && email.contains('.com')) {
       return true;

@@ -88,6 +88,7 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
+  //feature: read ThemeMode From LocalStorage
   void _readThemeModeFromLocalStorage() async {
     final readThemeState = await readAppThemeStateFromLocalStorage();
     if (readThemeState == AppThemeStateEnum.dark) {

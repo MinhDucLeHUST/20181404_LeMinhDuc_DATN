@@ -78,6 +78,11 @@ class _HomePageState extends State<HomePage> {
         dataFromRealtimeDatabase =
             RealtimeDatebaseModel.fromJson(dataFromRealtimeDatabaseJson);
       });
+      Future.delayed(const Duration(seconds: 0), (() async {
+        if (dataFromRealtimeDatabase.hasCameraRequest == true) {
+          await setStateImageUrl();
+        }
+      }));
     });
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
@@ -121,12 +126,15 @@ class _HomePageState extends State<HomePage> {
                   //camera
                   HomePageFeatureActionWidget(
                     actionFuntion: () async {
-                      hasCameraRequest(hasCameraRequest: true);
-
-                      Future.delayed(const Duration(seconds: 3), () async {
+                      if (dataFromRealtimeDatabase.hasCameraRequest == true) {
                         hasCameraRequest(hasCameraRequest: false);
+                      } else {
+                        hasCameraRequest(hasCameraRequest: true);
                         await setStateImageUrl();
-                      });
+                        Future.delayed(const Duration(seconds: 2), () async {
+                          hasCameraRequest(hasCameraRequest: false);
+                        });
+                      }
                     },
                     actionState: dataFromRealtimeDatabase.hasCameraRequest,
                     icon: const Icon(Icons.photo_camera),
@@ -179,36 +187,42 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  //feature : update lock password
   void updateLockPassword() async {
     await databaseRef.update(
       {"password": newLockPassword.toString()},
     );
   }
 
+  //feature : update open state
   void updateIsOpen({required bool isOpen}) async {
     await databaseRef.update(
       {"isOpen": isOpen},
     );
   }
 
+  //feature : update antithief state
   void updateIsAntiThief({required bool isAntiThief}) async {
     await databaseRef.update(
       {"isAntiThief": isAntiThief},
     );
   }
 
+  //feature : update warning state
   void updateWarningState({required bool isWarning}) async {
     await databaseRef.update(
       {"isWarning": isWarning},
     );
   }
 
+  //feature : update camera request state
   void hasCameraRequest({required bool hasCameraRequest}) async {
     await databaseRef.update(
       {"hasCameraRequest": hasCameraRequest},
     );
   }
 
+  //feature : show Change Password Form Dialog
   void showChangePasswordFormDialog({required BuildContext context}) {
     showDialog(
         context: context,
@@ -230,19 +244,6 @@ class _HomePageState extends State<HomePage> {
                       decoration: const InputDecoration(
                         labelText: 'Current password',
                         icon: Icon(Icons.password),
-                        // suffixIcon: IconButton(
-                        //   onPressed: () {
-                        //     setState(() {
-                        //       _isCurrentPasswordHide =
-                        //           !_isCurrentPasswordHide;
-                        //     });
-                        //   },
-                        //   icon: Icon(
-                        //     _isCurrentPasswordHide
-                        //         ? Icons.visibility
-                        //         : Icons.visibility_off,
-                        //   ),
-                        // ),
                       ),
                       onChanged: (value) {
                         if (value == currentLockPassword) {
@@ -262,19 +263,6 @@ class _HomePageState extends State<HomePage> {
                       decoration: const InputDecoration(
                         labelText: 'New password',
                         icon: Icon(Icons.password),
-                        // suffixIcon: IconButton(
-                        //   onPressed: () {
-                        //     setState(() {
-                        //       _isNewPasswordHide =
-                        //           !_isNewPasswordHide;
-                        //     });
-                        //   },
-                        //   icon: Icon(
-                        //     _isNewPasswordHide
-                        //         ? Icons.visibility
-                        //         : Icons.visibility_off,
-                        //   ),
-                        // ),
                       ),
                       onChanged: (value) {
                         setState(() {
@@ -292,19 +280,6 @@ class _HomePageState extends State<HomePage> {
                       decoration: const InputDecoration(
                         labelText: 'Confirm new password',
                         icon: Icon(Icons.password),
-                        // suffixIcon: IconButton(
-                        //   onPressed: () {
-                        //     setState(() {
-                        //       _isConfirmNewPasswordHide =
-                        //           !_isConfirmNewPasswordHide;
-                        //     });
-                        //   },
-                        //   icon: Icon(
-                        //     _isConfirmNewPasswordHide
-                        //         ? Icons.visibility
-                        //         : Icons.visibility_off,
-                        //   ),
-                        // ),
                       ),
                       onChanged: (value) {
                         confirmNewLockPassword = value;
@@ -369,10 +344,7 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-  Future<void> navigatorPopDialogAsycn(BuildContext context) async {
-    Navigator.of(context).pop();
-  }
-
+  //feature : show SnackBar when change Password Done
   void showSnackBarChangePasswordDone() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -387,6 +359,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Future<void> navigatorPopDialogAsycn(BuildContext context) async {
+    Navigator.of(context).pop();
+  }
+
+  //feature: get url image from firebase storage
   Future<String?> getImage() async {
     final ref = FirebaseStorage.instance.ref().child("data");
     final List<dynamic> fileRefs = (await ref.listAll()).items;
@@ -397,6 +374,7 @@ class _HomePageState extends State<HomePage> {
     return url;
   }
 
+  //feature: set imageUrl to widget State for ShowImage
   Future<void> setStateImageUrl() async {
     String? url = await getImage();
     if (url != null) {
@@ -404,5 +382,6 @@ class _HomePageState extends State<HomePage> {
         imageUrl = url;
       });
     }
+    debugPrint('Url when have event: $url');
   }
 }

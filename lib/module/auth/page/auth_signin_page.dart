@@ -246,6 +246,7 @@ class _SigninPageState extends State<SigninPage> {
     );
   }
 
+  //feature login with Email
   Future<UserCredential?> loginWithEmail() async {
     try {
       final credential = await FirebaseAuth.instance
@@ -263,6 +264,7 @@ class _SigninPageState extends State<SigninPage> {
     return null;
   }
 
+  //feature check email valid
   bool checkEmailValid(String email) {
     if (email.contains('@') && email.contains('.com')) {
       return true;

@@ -45,22 +45,6 @@ class _AppNavigationConfigState extends State<AppNavigationConfig> {
               Icons.settings,
             ),
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(
-          //     Icons.settings,
-          //   ),
-          // ),
-          // BottomNavigationBarItem(
-          //   icon: numberOfNotiUnRead != 0
-          //       ? Badge(
-          //           badgeContent: Text(
-          //             numberOfNotiUnRead.toString(),
-          //             style: const TextStyle(color: AppTextColor.light),
-          //           ),
-          //           child: const Icon(Icons.notifications),
-          //         )
-          //       : const Icon(Icons.notifications),
-          // ),
         ],
       ),
       tabBuilder: (context, index) {
