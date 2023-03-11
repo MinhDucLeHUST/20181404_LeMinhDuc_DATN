@@ -1,4 +1,3 @@
-// Code này đã fix xong camera. mai develop nốt phần "Firebase"
 #include <Arduino.h>
 #include <string>
 #include <LiquidCrystal_I2C.h>
